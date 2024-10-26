@@ -1,4 +1,5 @@
 import { initialCards } from './cards.js';
+import { openModal } from './modal.js';
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
@@ -7,7 +8,7 @@ const cardTemplate = document.querySelector('#card-template').content;
 const addPlaces = document.querySelector('.places__list');
 // @todo: Функция создания карточки
 
-function createCard(initialCards, deleteCard, cardLike) {
+function createCard(initialCards, deleteCard, cardLike, imageModal) {
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
     const cardImage = cardElement.querySelector('.card__image');
@@ -18,8 +19,10 @@ function createCard(initialCards, deleteCard, cardLike) {
     const deleteCardButton = cardElement.querySelector('.card__delete-button');
     deleteCardButton.addEventListener('click', deleteCard);
 
-    // const likeButton = document.querySelector('.card__like-button');
-    // likeButton.addEventListener('click', cardLike);
+    const likeButton = cardElement.querySelector('.card__like-button');
+    likeButton.addEventListener('click', cardLike);
+
+    cardImage.addEventListener('click', () => imageModal(initialCards));
 
     return cardElement;
 }
@@ -30,15 +33,28 @@ function deleteCard(evt) {
 }
 
 // функция лайка
-// function cardLike() {
-//     likeButton.classList.add('.card__like-button_is-active')
-    
-// }
+function cardLike(evt) {
+    evt.target.classList.toggle('card__like-button_is-active');
+}
+
+// функция открытия модалки с картинкой
+
+const imagePopup = document.querySelector('.popup_type_image');
+const imagePopupImage = imagePopup.querySelector('.popup__image');
+const imagePopupCaption = imagePopup.querySelector('.popup__caption');
+
+function imageModal(cardData) {
+    imagePopupImage.src = cardData.link;
+    imagePopupImage.alt = cardData.name;
+    imagePopupCaption.textContent = cardData.name;
+
+    openModal(imagePopup);
+}
 
 // @todo: Вывести карточки на страницу
 function addCards() {
     for (let i = 0; i < initialCards.length; i++) {
-        addPlaces.appendChild(createCard(initialCards[i], deleteCard));
+        addPlaces.appendChild(createCard(initialCards[i], deleteCard, cardLike, imageModal));
     }};
 
-    export {addPlaces, createCard, deleteCard, addCards};
+    export {addPlaces, createCard, deleteCard, addCards, cardLike, imageModal};
