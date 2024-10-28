@@ -1,19 +1,15 @@
-import { openImageModal } from '../index.js';
-
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
 
-// @todo: DOM узлы
-const addPlaces = document.querySelector('.places__list');
 // @todo: Функция создания карточки
 
-function createCard(initialCards, deleteCard, cardLike, openImageModal) {
+function createCard(cardData, deleteCard, cardLike, openImageModal) {
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
     const cardImage = cardElement.querySelector('.card__image');
-    cardImage.src = initialCards.link;
-    cardImage.alt = initialCards.name;
-    cardElement.querySelector('.card__title').textContent = initialCards.name;
+    cardImage.src = cardData.link;
+    cardImage.alt = cardData.name;
+    cardElement.querySelector('.card__title').textContent = cardData.name;
 
     const deleteCardButton = cardElement.querySelector('.card__delete-button');
     deleteCardButton.addEventListener('click', deleteCard);
@@ -21,7 +17,7 @@ function createCard(initialCards, deleteCard, cardLike, openImageModal) {
     const likeButton = cardElement.querySelector('.card__like-button');
     likeButton.addEventListener('click', cardLike);
 
-    cardImage.addEventListener('click', () => openImageModal(initialCards));
+    cardImage.addEventListener('click', () => openImageModal(cardData));
 
     return cardElement;
 }
@@ -36,4 +32,4 @@ function cardLike(evt) {
     evt.target.classList.toggle('card__like-button_is-active');
 }
 
-    export {addPlaces, createCard, deleteCard, cardLike};
+    export {createCard, deleteCard, cardLike};

@@ -1,7 +1,9 @@
 import './styles/index.css';
 import {initialCards} from "./scripts/cards.js";
-import { addPlaces, createCard, deleteCard, cardLike } from "./scripts/card.js";
-import {openModal, closeModal, closeModalByEsc, popup} from './scripts/modal.js';
+import { createCard, deleteCard, cardLike } from "./scripts/card.js";
+import {openModal, closeModal, popup} from './scripts/modal.js';
+
+const addPlaces = document.querySelector('.places__list');
 
 // открытие и закрытие edit-popup и new-card-popup по кнопке
 
@@ -86,10 +88,10 @@ const imagePopup = document.querySelector('.popup_type_image');
 const imagePopupImage = document.querySelector('.popup__image');
 const imagePopupCaption = document.querySelector('.popup__caption');
 
-function openImageModal(initialCards) {
-    imagePopupImage.src = initialCards.link;
-    imagePopupImage.alt = initialCards.name;
-    imagePopupCaption.textContent = initialCards.name;
+function openImageModal(cardData) {
+    imagePopupImage.src = cardData.link;
+    imagePopupImage.alt = cardData.name;
+    imagePopupCaption.textContent = cardData.name;
 
     openModal(imagePopup);
 }
