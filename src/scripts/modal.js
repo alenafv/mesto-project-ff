@@ -18,4 +18,4 @@ function closeModalByEsc(evt) {
     }    
 }
 
-export {openModal, closeModal, closeModalByEsc, popup};
+export {openModal, closeModal, closeModalByEsc};
