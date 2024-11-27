@@ -33,10 +33,10 @@ function createCard(cardData, deleteCard, likeCard, openImageModal, userId) {
         likeCard(evt, cardData._id, isLiked);
         evt.target.blur();
     });
-    
+
     cardImage.addEventListener('click', () => openImageModal(cardData));
 
     return cardElement;
 }
 
-    export {createCard};
+export { createCard };

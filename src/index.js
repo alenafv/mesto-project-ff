@@ -17,31 +17,31 @@ enableValidation({
     inactiveButtonClass: 'popup__button_disabled',
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
-  });
+});
 
 let userId;
 
 Promise.all([fetchAbout(), fetchCards()])
-  .then(([user, cards]) => {
-    userId = user._id;
+    .then(([user, cards]) => {
+        userId = user._id;
 
-    profileTitle.textContent = user.name;
-    profileDescription.textContent = user.about;
+        profileTitle.textContent = user.name;
+        profileDescription.textContent = user.about;
 
-    cards.forEach((card) => {
-        const cardElement = createCard(card, deleteCard, likeCard, openImageModal, userId);
-        addPlaces.append(cardElement);
+        cards.forEach((card) => {
+            const cardElement = createCard(card, deleteCard, likeCard, openImageModal, userId);
+            addPlaces.append(cardElement);
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
-})
-  .catch(error => {
-    console.error('Error:', error);
-});
 
 // обработчики попапа редактирования аватара
 const popupAvatar = document.querySelector('.popup_type_avatar');
 const avatarEditButton = document.querySelector('.profile__avatar');
 
-avatarEditButton.addEventListener('click', function() {
+avatarEditButton.addEventListener('click', function () {
     popupAvatar.querySelector('.popup__button').textContent = 'Сохранить';
     openModal(popupAvatar);
     clearValidation(popupAvatar, {
@@ -62,15 +62,15 @@ function formAvatarSubmit(evt) {
 
     const avatarLink = document.querySelector('.popup__input_type_avatar-link').value;
 
-    fetchAvatar(avatarLink) 
-    .then((data) => {
-        profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
-        closeModal(popupAvatar);
-        formSelectorAvatar.reset();
-    })
-    .catch((err) => {
-        console.log(err);
-      });
+    fetchAvatar(avatarLink)
+        .then((data) => {
+            profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
+            closeModal(popupAvatar);
+            formSelectorAvatar.reset();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 formSelectorAvatar.addEventListener('submit', formAvatarSubmit)
@@ -82,7 +82,7 @@ const popupEdit = document.querySelector('.popup_type_edit');
 const addButton = document.querySelector('.profile__add-button');
 const popupAdd = document.querySelector('.popup_type_new-card');
 
-editButton.addEventListener('click', function() {
+editButton.addEventListener('click', function () {
     fetchAbout()
         .then(({ name, about }) => {
             popupEdit.querySelector('.popup__button').textContent = 'Сохранить';
@@ -100,7 +100,7 @@ editButton.addEventListener('click', function() {
         .catch(error => console.error('Error fetching user data:', error));
 });
 
-addButton.addEventListener('click', function() {
+addButton.addEventListener('click', function () {
     popupAdd.querySelector('.popup__button').textContent = 'Сохранить';
     openModal(popupAdd);
     clearValidation(popupAdd, {
@@ -114,7 +114,7 @@ addButton.addEventListener('click', function() {
 
 const closeButtons = document.querySelectorAll('.popup__close');
 closeButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
         closeModal(this.closest('.popup'));
     })
 });
@@ -123,29 +123,29 @@ closeButtons.forEach(button => {
 
 const popups = document.querySelectorAll('.popup');
 popups.forEach(popup => {
-    popup.addEventListener('click', function(event) {
+    popup.addEventListener('click', function (event) {
         if (event.target === popup) {
             closeModal(this.closest('.popup'));
         }
-        });
     });
+});
 
 // обработчик формы изменения информации
-const formSelectorEdit = document.querySelector('.popup__form[name="edit-profile"]'); 
+const formSelectorEdit = document.querySelector('.popup__form[name="edit-profile"]');
 
 function formEditSubmit(evt) {
     evt.preventDefault();
     formSelectorEdit.querySelector('.popup__button').textContent = 'Сохранение...';
 
     updateUserProfile(nameInput.value, jobInput.value)
-    .then(({ name, about }) => {
-        profileTitle.textContent = name;
-        profileDescription.textContent = about;
-        closeModal(popupEdit);
-    })
-    .catch((err) => {
-        console.log(err);
-      });
+        .then(({ name, about }) => {
+            profileTitle.textContent = name;
+            profileDescription.textContent = about;
+            closeModal(popupEdit);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 formSelectorEdit.addEventListener('submit', formEditSubmit);
@@ -169,7 +169,7 @@ function formAddSubmit(evt) {
         })
         .catch((err) => {
             console.log(err);
-          });
+        });
 }
 
 formSelectorAdd.addEventListener('submit', formAddSubmit);
@@ -207,4 +207,4 @@ ConfirmButton.addEventListener('click', () => {
     }
 })
 
-export {openImageModal, openDeletePopup};
+export { openImageModal, openDeletePopup };
