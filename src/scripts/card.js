@@ -1,11 +1,9 @@
-import { openDeletePopup } from "..";
-
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
 
 // @todo: Функция создания карточки
 
-function createCard(cardData, deleteCard, likeCard, openImageModal, userId) {
+function createCard(cardData, handleDeleteCard, handleLikeCard, openImageModal, userId) {
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
     const cardImage = cardElement.querySelector('.card__image');
@@ -15,7 +13,8 @@ function createCard(cardData, deleteCard, likeCard, openImageModal, userId) {
 
     const deleteCardButton = cardElement.querySelector('.card__delete-button');
     if (cardData.owner && cardData.owner._id === userId) {
-        deleteCardButton.addEventListener('click', (evt) => openDeletePopup(evt, cardData._id, deleteCard, cardElement));
+        deleteCardButton.addEventListener('click', () => handleDeleteCard(cardData._id, cardElement)
+        );
     } else {
         deleteCardButton.remove();
     }
@@ -29,8 +28,7 @@ function createCard(cardData, deleteCard, likeCard, openImageModal, userId) {
     }
 
     likeButton.addEventListener('click', (evt) => {
-        const isLiked = likeButton.classList.contains('card__like-button_is-active');
-        likeCard(evt, cardData._id, isLiked);
+        handleLikeCard(cardData._id, likeButton, likeCount);
         evt.target.blur();
     });
 

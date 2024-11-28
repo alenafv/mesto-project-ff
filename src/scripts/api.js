@@ -6,20 +6,19 @@ const config = {
     }
 };
 
+function handleResponse(res) {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+};
+
 const fetchAbout = () => {
     return fetch(`${config.baseUrl}/users/me`, {
         method: 'GET',
         headers: config.headers
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        .then(handleResponse)
 };
 
 const updateUserProfile = (name, about) => {
@@ -28,15 +27,7 @@ const updateUserProfile = (name, about) => {
         headers: config.headers,
         body: JSON.stringify({ name, about })
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        .then(handleResponse)
 };
 
 const fetchCards = () => {
@@ -44,57 +35,26 @@ const fetchCards = () => {
         method: 'GET',
         headers: config.headers
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
+        .then(handleResponse)
         .then(data => {
             return data;
         })
-        .catch((err) => {
-            console.log(err);
-        });
 };
 
-const likeCard = (evt, cardId, isLiked) => {
+const likeCard = (cardId, isLiked) => {
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
         method: isLiked ? 'DELETE' : 'PUT',
         headers: config.headers
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                return Promise.reject(`Ошибка: ${res.status}`);
-            }
-        })
-        .then(data => {
-            evt.target.classList.toggle('card__like-button_is-active');
-            const likesCount = evt.target.closest('.card').querySelector('.card__likes-count');
-            likesCount.textContent = data.likes.length;
-        })
-        .catch(err => {
-            console.error(err);
-        });
+        .then(handleResponse)
 };
 
-const deleteCard = (cardId, cardElement) => {
+const deleteCard = (cardId) => {
     return fetch(`${config.baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
         headers: config.headers
     })
-        .then(res => {
-            if (res.ok) {
-                cardElement.remove();
-            } else {
-                return Promise.reject(`Ошибка: ${res.status}`);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-        });
+        .then(handleResponse)
 };
 
 const fetchNewCard = (name, link) => {
@@ -103,15 +63,7 @@ const fetchNewCard = (name, link) => {
         headers: config.headers,
         body: JSON.stringify({ name, link })
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        .then(handleResponse)
 };
 
 const fetchAvatar = (avatar) => {
@@ -120,15 +72,7 @@ const fetchAvatar = (avatar) => {
         headers: config.headers,
         body: JSON.stringify({ avatar })
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        .then(handleResponse)
 };
 
 export { fetchAbout, updateUserProfile, fetchCards, likeCard, deleteCard, fetchNewCard, fetchAvatar }
